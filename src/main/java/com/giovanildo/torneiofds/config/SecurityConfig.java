@@ -22,12 +22,16 @@ public class SecurityConfig {
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
+            .headers(headers -> headers
+                .frameOptions(frame -> frame.sameOrigin())
+            )
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(
                         "/api/auth/**",
                         "/swagger-ui/**",
                         "/swagger-ui.html",
-                        "/v3/api-docs/**"
+                        "/v3/api-docs/**",
+                        "/h2-console/**"
                 ).permitAll()
                 .anyRequest().authenticated()
             )
