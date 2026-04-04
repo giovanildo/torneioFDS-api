@@ -17,6 +17,7 @@ public class TorneioService {
     private final CompetidorRepository competidorRepository;
     private final PartidaRepository partidaRepository;
     private final CompetidorEmCampoRepository competidorEmCampoRepository;
+    private final PremioRepository premioRepository;
     private final EAtletaRepository eAtletaRepository;
     private final ClubeRepository clubeRepository;
 
@@ -40,6 +41,7 @@ public class TorneioService {
     @Transactional
     public void deletar(Long id) {
         Torneio torneio = buscarPorId(id);
+        premioRepository.deleteByTorneioId(id);
         competidorEmCampoRepository.deleteByTorneioId(id);
         partidaRepository.deleteByTorneioId(id);
         competidorRepository.deleteByTorneioId(id);

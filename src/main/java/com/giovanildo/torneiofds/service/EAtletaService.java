@@ -21,6 +21,11 @@ public class EAtletaService {
         return eAtletaRepository.findAll();
     }
 
+    public EAtleta buscarPorId(Long id) {
+        return eAtletaRepository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("EAtleta nao encontrado"));
+    }
+
     public EAtleta buscarPorLogin(String login) {
         return eAtletaRepository.findByLogin(login)
                 .orElseThrow(() -> new NoSuchElementException("EAtleta nao encontrado: " + login));

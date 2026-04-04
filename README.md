@@ -60,6 +60,7 @@ Com a aplicacao rodando, acesse:
 | GET | `/api/torneios` | Listar todos os torneios |
 | POST | `/api/torneios` | Criar novo torneio |
 | GET | `/api/torneios/{id}` | Buscar torneio por ID |
+| DELETE | `/api/torneios/{id}` | Deletar torneio e todos os dados associados |
 
 ### Competidores (autenticado)
 
@@ -82,6 +83,14 @@ Com a aplicacao rodando, acesse:
 | Metodo | Endpoint | Descricao |
 |---|---|---|
 | GET | `/api/torneios/{id}/classificacao` | Tabela de classificacao com pontos corridos |
+
+### Premios e Sala de Trofeus (autenticado)
+
+| Metodo | Endpoint | Descricao |
+|---|---|---|
+| POST | `/api/torneios/{id}/premios/gerar` | Gerar premios baseado na classificacao final |
+| GET | `/api/torneios/{id}/premios` | Listar premios de um torneio |
+| GET | `/api/eatletas/{id}/trofeus` | Sala de trofeus de um jogador |
 
 ### Clubes (autenticado)
 
@@ -147,6 +156,27 @@ curl http://localhost:8080/api/torneios/1/classificacao \
   -u admin:admin
 ```
 
+### Gerar premios
+
+```bash
+curl -X POST http://localhost:8080/api/torneios/1/premios/gerar \
+  -u admin:admin
+```
+
+### Ver sala de trofeus de um jogador
+
+```bash
+curl http://localhost:8080/api/eatletas/1/trofeus \
+  -u admin:admin
+```
+
+### Deletar torneio
+
+```bash
+curl -X DELETE http://localhost:8080/api/torneios/1 \
+  -u admin:admin
+```
+
 ## Modelo de dados
 
 ```
@@ -155,6 +185,7 @@ Clube              ----> representa   ----> EAtleta no Torneio (via Competidor)
 Competidor         ----> joga em      ----> Partida (via CompetidorEmCampo)
 Partida            ----> compoe       ----> Torneio (round-robin, turno + returno)
 Classificacao      ----> resultado    ----> tabela de pontos (3/1/0)
+Premio             ----> reconhece   ----> conquista de um EAtleta em um Torneio
 ```
 
 ### Entidades
@@ -168,6 +199,8 @@ Classificacao      ----> resultado    ----> tabela de pontos (3/1/0)
 | `Partida` | Jogo entre dois competidores, com rodada e status |
 | `CompetidorEmCampo` | Participacao de um competidor em uma partida (gols, mando de campo) |
 | `Classificacao` | POJO calculado com pontos, vitorias, empates, derrotas, saldo de gols |
+| `Premio` | Premiacao de um jogador em um torneio (titulo, artilheiro, coca-cola, etc) |
+| `TipoPremio` | Enum: CAMPEAO, VICE_CAMPEAO, TERCEIRO_LUGAR, ARTILHEIRO, MENOS_VAZADA, COCA_COLA, IBIS |
 
 ### Regras de classificacao
 
@@ -175,6 +208,18 @@ Classificacao      ----> resultado    ----> tabela de pontos (3/1/0)
 - Empate: 1 ponto
 - Derrota: 0 pontos
 - Desempate: pontos > vitorias > saldo de gols
+
+### Premios automaticos (gerados ao final do torneio)
+
+| Premio | Criterio |
+|---|---|
+| Campeao | 1o lugar na classificacao |
+| Vice-campeao | 2o lugar |
+| Terceiro lugar | 3o lugar (se houver 3+ competidores) |
+| Artilheiro | Mais gols pro |
+| Menos Vazada | Menos gols contra |
+| Coca-Cola (Desonra) | Ultimo lugar — deve pagar uma coca-cola como prenda |
+| Premio Ibis | Antipremio maximo — concedido ao atingir 12 Coca-Colas na carreira |
 
 ## Estrutura do projeto
 
@@ -188,6 +233,7 @@ src/main/java/com/giovanildo/torneiofds/
 ├── controller/
 │   ├── AuthController.java
 │   ├── TorneioController.java
+│   ├── PremioController.java
 │   ├── ClubeController.java
 │   └── EAtletaController.java
 ├── dto/
@@ -198,7 +244,9 @@ src/main/java/com/giovanildo/torneiofds/
 │   ├── ClubeRequest.java / ClubeResponse.java
 │   ├── ResultadoRequest.java
 │   ├── PartidaResponse.java
-│   └── EAtletaResponse.java
+│   ├── EAtletaResponse.java
+│   ├── PremioResponse.java
+│   └── SalaDeTrofeusResponse.java
 ├── model/
 │   ├── EAtleta.java
 │   ├── Clube.java
@@ -206,16 +254,20 @@ src/main/java/com/giovanildo/torneiofds/
 │   ├── Competidor.java
 │   ├── Partida.java
 │   ├── CompetidorEmCampo.java
-│   └── Classificacao.java
+│   ├── Classificacao.java
+│   ├── Premio.java
+│   └── TipoPremio.java
 ├── repository/
 │   ├── EAtletaRepository.java
 │   ├── ClubeRepository.java
 │   ├── TorneioRepository.java
 │   ├── CompetidorRepository.java
 │   ├── PartidaRepository.java
-│   └── CompetidorEmCampoRepository.java
+│   ├── CompetidorEmCampoRepository.java
+│   └── PremioRepository.java
 └── service/
     ├── TorneioService.java
+    ├── PremioService.java
     ├── EAtletaService.java
     ├── EAtletaDetailsService.java
     └── ClubeService.java
