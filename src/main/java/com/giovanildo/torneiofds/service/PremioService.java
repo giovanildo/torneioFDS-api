@@ -31,7 +31,7 @@ public class PremioService {
 
     /**
      * Gera premios automaticamente baseado na classificacao final do torneio.
-     * Premios: Campeao, Vice, 3o lugar, Artilheiro, Menos Vazada, Coca-Cola.
+     * Premios: Campeao, Vice, Artilheiro, Menos Vazada, Coca-Cola, Escapou da Coca-Cola.
      * Se o jogador atingir 12 Coca-Colas, recebe o Premio Ibis.
      */
     @Transactional
@@ -61,11 +61,6 @@ public class PremioService {
 
         // Vice (2o lugar)
         premios.add(criarPremio(torneio, porNome, classificacao.get(1), TipoPremio.VICE_CAMPEAO));
-
-        // 3o lugar (se tiver pelo menos 3)
-        if (classificacao.size() >= 3) {
-            premios.add(criarPremio(torneio, porNome, classificacao.get(2), TipoPremio.TERCEIRO_LUGAR));
-        }
 
         // Artilheiro (mais gols pro)
         Classificacao artilheiro = classificacao.stream()

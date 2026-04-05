@@ -38,7 +38,6 @@ public class PremioController {
 
         List<PremioResponse> titulos = filtrar(premios, TipoPremio.CAMPEAO);
         List<PremioResponse> vices = filtrar(premios, TipoPremio.VICE_CAMPEAO);
-        List<PremioResponse> terceiros = filtrar(premios, TipoPremio.TERCEIRO_LUGAR);
         List<PremioResponse> artilheiros = filtrar(premios, TipoPremio.ARTILHEIRO);
         List<PremioResponse> menosVazadas = filtrar(premios, TipoPremio.MENOS_VAZADA);
         List<PremioResponse> cocaColas = filtrar(premios, TipoPremio.COCA_COLA);
@@ -53,7 +52,7 @@ public class PremioController {
 
         return new SalaDeTrofeusResponse(
                 nome,
-                titulos, vices, terceiros, artilheiros, menosVazadas, cocaColas, escapouDaCocaCola, ibis,
+                titulos, vices, artilheiros, menosVazadas, cocaColas, escapouDaCocaCola, ibis,
                 (int) totalTorneios,
                 titulos.size(),
                 cocaColas.size(),

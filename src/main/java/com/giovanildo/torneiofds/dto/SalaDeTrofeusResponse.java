@@ -6,7 +6,6 @@ public record SalaDeTrofeusResponse(
         String nomeEAtleta,
         List<PremioResponse> titulos,
         List<PremioResponse> vices,
-        List<PremioResponse> terceiros,
         List<PremioResponse> artilheiros,
         List<PremioResponse> menosVazadas,
         List<PremioResponse> cocaColas,

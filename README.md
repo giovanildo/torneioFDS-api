@@ -200,7 +200,7 @@ Premio             ----> reconhece   ----> conquista de um EAtleta em um Torneio
 | `CompetidorEmCampo` | Participacao de um competidor em uma partida (gols, mando de campo) |
 | `Classificacao` | POJO calculado com pontos, vitorias, empates, derrotas, saldo de gols |
 | `Premio` | Premiacao de um jogador em um torneio (titulo, artilheiro, coca-cola, etc) |
-| `TipoPremio` | Enum: CAMPEAO, VICE_CAMPEAO, TERCEIRO_LUGAR, ARTILHEIRO, MENOS_VAZADA, COCA_COLA, ESCAPOU_DA_COCA_COLA, IBIS |
+| `TipoPremio` | Enum: CAMPEAO, VICE_CAMPEAO, ARTILHEIRO, MENOS_VAZADA, COCA_COLA, ESCAPOU_DA_COCA_COLA, IBIS |
 
 ### Regras de classificacao
 
@@ -215,7 +215,7 @@ Premio             ----> reconhece   ----> conquista de um EAtleta em um Torneio
 |---|---|
 | Campeao | 1o lugar na classificacao |
 | Vice-campeao | 2o lugar |
-| Terceiro lugar | 3o lugar (se houver 3+ competidores) |
+
 | Artilheiro | Mais gols pro |
 | Menos Vazada | Menos gols contra |
 | Coca-Cola (Desonra) | Ultimo lugar — deve pagar uma coca-cola como prenda |
