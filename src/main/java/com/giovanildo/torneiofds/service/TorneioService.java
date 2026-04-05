@@ -31,7 +31,7 @@ public class TorneioService {
     }
 
     public List<Torneio> listarTodos() {
-        return torneioRepository.findAll();
+        return torneioRepository.findAllByOrderByIdDesc();
     }
 
     public Torneio buscarPorId(Long id) {

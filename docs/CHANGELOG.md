@@ -6,6 +6,21 @@ Registro de mudancas do torneioFDS (API + Web).
 
 ## 2026-04-04
 
+### Ordenacao de torneios por ID decrescente
+
+Torneios agora sao listados do mais recente para o mais antigo.
+
+**API:**
+- `TorneioRepository`: novo metodo `findAllByOrderByIdDesc()`
+- `TorneioService.listarTodos()`: usa ordenacao decrescente por ID
+
+### Redirect apos criar torneio
+
+Ao criar um torneio, o usuario e redirecionado diretamente para a tela de detalhes do torneio criado, em vez de voltar para a lista.
+
+**Web:**
+- `TorneioController.salvar()`: captura retorno da API e redireciona para `/torneios/{id}`
+
 ### Melhorias no fluxo de torneio e novo premio Escapou da Coca-Cola
 
 Conjunto de melhorias na experiencia de uso do torneio: abas condicionais, botoes +/- para gols, partidas sequenciais com bloqueio, aba de resumo ao final e novo premio.
